@@ -112,7 +112,7 @@ int main() {
     
     for(a; a <= b; a = a + step) {
         cout << "x = " << a << ", y = ";
-        cout << formula( a, n) << endl;
+        cout << formula( a, n) + 100 << endl;
     }
 
     return 0;
