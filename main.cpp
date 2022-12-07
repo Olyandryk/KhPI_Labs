@@ -6,76 +6,56 @@ using std::cin;
 using std::endl;
 
 void checkAandB(double &a, double &b) {
-    do {
 
-        cout << "Please input 'a' and 'b' which are the range of 'x'. Remember! 'b' must be greater than 'a'" << endl;
-        cout << "a: ";
+    cout << "Please input 'a' and 'b' which are the range of 'x'. Remember! 'b' must be greater than 'a'" << endl;
+    cout << "a: ";
 
-        while(!(cin >> a)) {         // enter loop scope if "cin >> a" fails
-            if(cin.eof()) return;      // return if the stream was closed
-            cin.clear();                  // clear the stream state
+    if(!(cin >> a)) {
+        throw "Error! Incorrect data!";
+    }
 
-            // ignore everything until a newline char is found
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    cout << "b: ";
 
-            cout << "Icorrect data! Please try again." << endl;
-            cout << "a: ";
-        }
+    if(!(cin >> b)) {
+        throw "Error! Incorrect data!";
+    }
 
-        cout << "b: ";
+    if(a > b) {
+        throw "Error! 'a' cannot be greater than 'b'.";
+    }
 
-        while(!(cin >> b)) {         // enter loop scope if "cin >> b" fails
-            if(cin.eof()) return;      // return if the stream was closed
-            cin.clear();                  // clear the stream state
-
-            // ignore everything until a newline char is found
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-            cout << "Icorrect data! Please try again." << endl;
-            cout << "b: ";
-        }
-
-    } while(a > b);
 }
 
 void checkN(double &n) {
-    do {
 
-        cout << "Please input 'n'. Warning! 'n' must be greater than 2." << endl;
-        cout << "n: ";
+    cout << "Please input 'n'. Warning! 'n' must be greater than 2." << endl;
+    cout << "n: ";
 
-        while(!(cin >> n)) {         // enter loop scope if "cin >> n" fails
-            if(cin.eof()) return;      // return if the stream was closed
-            cin.clear();                  // clear the stream state
+    if(!(cin >> n)) {
+        throw "Error! Incorrect data!";
+    }
 
-            // ignore everything until a newline char is found
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    if(n < 2) {
+        throw "Error! 'n' cannot be less than 2.";
+    }
 
-            cout << "Icorrect data! Please try again." << endl;
-            cout << "n: ";
-        }
-
-    } while(n < 2 || !(n == (int)n));
+    if(!(n == (int)n)) {
+        throw "Error! 'n' must be integer.";
+    }
 }
 
 void checkStep(double &step) {
-    do {
 
-        cout << "Please input step of this program. Remember! 'step' must be positive'." << endl;
-        cout << "step: ";
+    cout << "Please input step of this program. Remember! 'step' must be positive'." << endl;
+    cout << "step: ";
 
-        while(!(cin >> step)) {         // enter loop scope if "cin >> step" fails
-            if(cin.eof()) return;      // return if the stream was closed
-            cin.clear();                  // clear the stream state
+    if(!(cin >> step)) {
+        throw "Error! Incorrect data!";
+    }
 
-            // ignore everything until a newline char is found
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-            cout << "Icorrect data! Please try again." << endl;
-            cout << "step: ";
-        }
-
-    } while(step <= 0);
+    if(step <= 0) {
+        throw "Error! 'step' must be greater than 0.";
+    }
 }
 
 double formula(double x, int n) {
@@ -99,6 +79,9 @@ double formula(double x, int n) {
         for(double i = 1; i <= n - 1; i++) {
             double sum2 = 0;
             for(double j = 0; j <= n - 1; j++) {
+                if(i + j == 0) {
+                    throw "Error! Division by zero.";
+                }
                 sum2 = sum2 + x / (i + j);
             }
             sum1 = sum1 + sum2;
@@ -114,7 +97,7 @@ double formula(double x, int n) {
 
 void range(double &a, double &b, double n, double step) {
     for(a; a <= b; a = a + step) {
-        cout << "x = " << a << ", y = " << formula( a, n) + 100 << endl;
+        cout << "x = " << a << ", y = " << formula( a, n)<< endl;
     }
 }
 
@@ -122,10 +105,17 @@ int main() {
     
     double a, b, n, step;
 
-    checkAandB(a, b);
-    checkN(n);
-    checkStep(step);
-    range(a, b, n, step);
+    try {
+        checkAandB(a, b);
+        checkN(n);
+        checkStep(step);
+        range(a, b, n, step);
+    }
+    catch(const char* message) {
+        cout << message << endl;
+    } catch(...) {
+        cout << "Unknown error!" << endl;
+    }
 
     return 0;
 
