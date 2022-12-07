@@ -114,7 +114,7 @@ double formula(double x, int n) {
 
 void range(double &a, double &b, double n, double step) {
     for(a; a <= b; a = a + step) {
-        cout << "x = " << a << ", y = " << formula( a, n) + 100 << endl;
+        cout << "x = " << a << ", y = " << formula( a, n) << endl;
     }
 }
 
